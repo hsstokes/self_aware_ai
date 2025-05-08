@@ -191,11 +191,13 @@
             }
             
             draw() {
-                // Draw the circle
+                // Draw the pentagon
                 noStroke();
                 const alpha = map(this.age, 0, this.lifetime, 255, 0);
                 fill(red(this.colour), green(this.colour), blue(this.colour), alpha);
-                circle(this.x, this.y, this.radius * 2);
+                
+                // Draw pentagon instead of circle
+                this.drawPentagon(this.x, this.y, this.radius);
                 
                 // Update position
                 this.x += this.velX;
