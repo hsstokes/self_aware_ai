@@ -191,12 +191,20 @@
             }
             
             draw() {
-                // Draw the Pentagon
                 noStroke();
                 const alpha = map(this.age, 0, this.lifetime, 255, 0);
                 fill(red(this.colour), green(this.colour), blue(this.colour), alpha);
-                this.drawPentagon(this.x, this.y, this.radius);
-                
+
+                // Draw simple pentagon
+                beginShape();
+                for (let i = 0; i < 5; i++) {
+                    let angle = TWO_PI * i / 5 - HALF_PI;
+                    let px = this.x + cos(angle) * this.radius;
+                    let py = this.y + sin(angle) * this.radius;
+                    vertex(px, py);
+                }
+                endShape(CLOSE);
+ 
                 // Update position
                 this.x += this.velX;
                 this.y += this.velY;
