@@ -216,6 +216,17 @@
                 // Update age
                 this.age++;
             }
+            // Method to draw a pentagon
+            drawPentagon(x, y, radius) {
+                beginShape();
+                for (let i = 0; i < 5; i++) {
+                    const angle = TWO_PI / 5 * i; // Angle for each corner of the pentagon
+                    const px = x + radius * cos(angle); // X position of the vertex
+                    const py = y + radius * sin(angle); // Y position of the vertex
+                    vertex(px, py);
+            }
+                endShape(CLOSE); // Close the shape
+            }
             
             isFinished() {
                 return this.age >= this.lifetime;
