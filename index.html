@@ -1347,11 +1347,24 @@
             
             const gapPercentage = Math.round(dimensionalDiff * 100);
             
-            // Update stats display
-            document.getElementById('uncannyScore').textContent = `Your Uncanny Rating: ${feedback.uncannyValue}/10`;
+            // Calculate the average difference across all dimensions for uncanny value
+            const analyticDiff = Math.abs(aiFramework.analytical - humanPerception.analytical);
+            const temporalDiff = Math.abs(aiFramework.temporal - humanPerception.temporal);
+            const contextualDiff = Math.abs(aiFramework.contextual - humanPerception.contextual);
+            const intuitiveDiff = Math.abs(aiFramework.intuitive - humanPerception.intuitive);
+
+            // Average the differences and scale to 1-10 range
+            const avgDifference = (analyticDiff + temporalDiff + contextualDiff + intuitiveDiff) / 4;
+            const uncannyValue = Math.round(avgDifference * 10);
+
+            // Set the value (with minimum of 1 and maximum of 10)
+            const clampedValue = Math.max(1, Math.min(10, uncannyValue));
+
+            // Update stats display with calculated values
+            document.getElementById('uncannyScore').textContent = `Your Uncanny Rating: ${clampedValue}/10`;
             document.getElementById('emotionalResponse').textContent = `Your Emotional Response: ${feedback.emotion}`;
             document.getElementById('dimensionalGap').textContent = `Dimensional Gap: ${gapPercentage}%`;
-            
+
             // Generate interpretation summary
             let summaryText = "This suggests ";
             
@@ -1363,13 +1376,13 @@
                 summaryText += "your perception closely aligns with the intended AI empathy framework dimensions.";
             }
             
-            // Add uncanny valley insight
-            if (feedback.uncannyValue > 7) {
+            // Add uncanny valley insight based on the calculated value
+            if (clampedValue >= 7) {
                 summaryText += " The high uncanny rating suggests you're experiencing the 'uncanny valley' effect in this interaction.";
-            } else if (feedback.uncannyValue < 4) {
+            } else if (clampedValue <= 3) {
                 summaryText += " Your low uncanny rating suggests this interaction feels relatively natural to you.";
             }
-            
+            // Update the summary text
             document.getElementById('interpretationSummary').textContent = summaryText;
             
             // Show results overlay
